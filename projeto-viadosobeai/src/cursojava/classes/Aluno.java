@@ -1,5 +1,10 @@
 package cursojava.classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cursojava.constantes.statusAluno;
+
 /*ESTA É NOSSA CLASSE/OBEJETO QUE REPRESENTA O ALUNO*/
 public class Aluno {
 
@@ -14,47 +19,21 @@ public class Aluno {
 	private String dataMatricula;
 	private String nomeEscola;
 	private String serieMatriculada;
-	
-	private double nota1 ;
-	private double nota2 ;
-	private double nota3 ;
-	private double nota4 ;
+
+	/* Novo Objeto da Classe Disciplinas */
+	private List<Disciplinas> disciplinas = new ArrayList<Disciplinas>();
 
 	/*
 	 * SET SÃO PARA ADICIONAR OU RECEBER DADOS PARA OS ATRIBUTOS GET É PARA
 	 * RESGASTAR OU OBTER O VALOR DO ATRIBUTO
 	 */
 
-	public double getNota1() {
-		return nota1;
+	public List<Disciplinas> getDisciplinas() {
+		return disciplinas;
 	}
 
-	public void setNota1(double nota1) {
-		this.nota1 = nota1;
-	}
-
-	public double getNota2() {
-		return nota2;
-	}
-
-	public void setNota2(double nota2) {
-		this.nota2 = nota2;
-	}
-
-	public double getNota3() {
-		return nota3;
-	}
-
-	public void setNota3(double nota3) {
-		this.nota3 = nota3;
-	}
-
-	public double getNota4() {
-		return nota4;
-	}
-
-	public void setNota4(double nota4) {
-		this.nota4 = nota4;
+	public void setDisciplinas(List<Disciplinas> disciplinas) {
+		this.disciplinas = disciplinas;
 	}
 
 	public String getNome() {
@@ -137,9 +116,74 @@ public class Aluno {
 		this.serieMatriculada = serieMatriculada;
 	}
 
-	/*metodo simples que retorna a media do aluno*/
+	/* metodo que percorr uma lista de Notas que retorna a media do aluno */
 	public double getmediaNota() {
-		return(nota1 + nota2 + nota3 + nota4 ) / 4;
+		double somaNotas = 0;
+
+		for (Disciplinas disciplinas : disciplinas) {
+			somaNotas += disciplinas.getNota();
+		}
+		return somaNotas / disciplinas.size();
 	}
-	
+
+	/*
+	 * metodo simples que retorna se a media vindo getmediaNota é maior ou menor que
+	 * 70 e determina se o aluno esta aprovado ou reprovado
+	 */
+	public boolean getAprovado() {
+		double media = this.getmediaNota();
+		if (media >= 70) {
+			return true;
+		} else {
+			return false;
+
+		}
+	}
+
+	public String getAprovado2() {
+		double media = this.getmediaNota();
+		if (media >= 50) {
+			if (media >= 70) {
+				return statusAluno.APROVADO;
+			} else {
+				return statusAluno.RECUPERACAO;
+			}
+		} else {
+			return statusAluno.REPROVADO;
+		}
+	}
+
+	/* TOSTRING */
+	@Override
+	public String toString() {
+		return "Aluno [nome=" + nome + ", idade=" + idade + ", dataNascimento=" + dataNascimento + ", nrorg=" + nrorg
+				+ ", nrocpf=" + nrocpf + ", nomeMae=" + nomeMae + ", nomePai=" + nomePai + ", dataMatricula="
+				+ dataMatricula + ", nomeEscola=" + nomeEscola + ", serieMatriculada=" + serieMatriculada + "]";
+	}
+
+	/* HASHCODE E EQUALS */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Aluno other = (Aluno) obj;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		return true;
+	}
 }
